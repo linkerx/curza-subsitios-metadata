@@ -13,7 +13,12 @@
 function curza_sites_register_route(){
 
     $route = 'curza/v1';
-  
+
+    register_rest_route( $route, '/sites', array(
+      'methods' => WP_REST_Server::READABLE,
+      'callback' => 'curza_get_site',
+    ));
+
     register_rest_route( $route, '/sites/(?P<name>[a-zA-Z0-9-]+)', array(
       'methods' => WP_REST_Server::READABLE,
       'callback' => 'curza_get_site',
@@ -29,9 +34,15 @@ function curza_sites_register_route(){
  */
 function curza_get_site(WP_REST_Request $request){
 
+    if(isset($request['name'])){
+      $path = '/'.$request['name'].'/';
+    } else {
+      $path = '/';
+    }
     $sites_args = array(
-      'path' => '/'.$request['name'].'/' // los posts tb solo publicos?
+      'path' => $path // los posts tb solo publicos?
     );
+
     $sites = get_sites($sites_args);
     if(count($sites) != 1){
       return new WP_REST_Response('no existe el área', 404 );
