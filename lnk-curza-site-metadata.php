@@ -53,6 +53,7 @@ function curza_get_site(WP_REST_Request $request){
     $site->frontpage = get_option('page_on_front');
     $site->tipo_pagina = get_option('curza_tipo_pagina','otro');
     $site->id_departamento = get_option('curza_id_departamento',0);
+    $site->barra_menu = get_option('curza_barra_menu_abierta',0);
   
     if($site->frontpage != 0){
       $site->page = get_post($site->frontpage);
